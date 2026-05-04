@@ -1,0 +1,255 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sports Spotlight | Profile Builder</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <header class="nav">
+        <a class="brand" href="#top" aria-label="Sports Spotlight home">
+          <span class="brand-mark">S</span>
+          <span>Sports Spotlight</span>
+        </a>
+        <nav class="nav-links" aria-label="Primary navigation">
+          <a href="#builder">Build a page</a>
+          <a href="#features">Features</a>
+          <a href="#examples">Examples</a>
+        </nav>
+      </header>
+
+      <main id="top">
+        <section class="hero">
+          <div>
+            <p class="eyebrow">Sports profile pages</p>
+            <h1>Show the sports story that makes you unforgettable.</h1>
+            <p class="hero-copy">
+              Create a page for favorite sports, players, personal milestones,
+              tournament wins, and coaching impact. Coaches can also spotlight
+              notable students and the accomplishments they helped shape.
+            </p>
+            <div class="hero-actions">
+              <a class="button" href="#builder">Create a sample page</a>
+              <a class="button button-secondary" href="#examples">View examples</a>
+            </div>
+          </div>
+
+          <aside class="mock-phone" aria-label="Profile preview mockup">
+            <div class="mock-screen">
+              <div class="profile-cover"></div>
+              <div class="profile-card">
+                <div class="avatar">ME</div>
+                <h2>Maya Ellis</h2>
+                <p>Basketball coach, skills trainer, and youth mentor.</p>
+                <div class="pill-row">
+                  <span class="pill">Basketball</span>
+                  <span class="pill">Track</span>
+                  <span class="pill">Leadership</span>
+                </div>
+                <div class="mini-stats">
+                  <div class="mini-stat">
+                    <strong>14</strong>
+                    <span>Wins</span>
+                  </div>
+                  <div class="mini-stat">
+                    <strong>9</strong>
+                    <span>Students</span>
+                  </div>
+                  <div class="mini-stat">
+                    <strong>3</strong>
+                    <span>Sports</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </aside>
+        </section>
+
+        <section class="section" id="builder">
+          <div class="section-heading">
+            <div>
+              <p class="eyebrow">Interactive builder</p>
+              <h2>Design a profile in seconds.</h2>
+            </div>
+            <p>
+              Fill in the profile details and the live preview updates with
+              sports, favorite players, achievements, and coach-only student
+              highlights.
+            </p>
+          </div>
+
+          <div class="builder-layout">
+            <form class="profile-builder card" id="profile-form">
+              <h3>Profile details</h3>
+              <div class="field">
+                <label for="name">Name</label>
+                <input id="name" name="name" value="Coach Andre Ellis" />
+              </div>
+              <div class="field">
+                <label for="role">Role or headline</label>
+                <input id="role" name="role" value="Basketball coach and mentor" />
+              </div>
+              <div class="field">
+                <label for="location">Location</label>
+                <input id="location" name="location" value="Atlanta, GA" />
+              </div>
+              <div class="field">
+                <label for="bio">Bio</label>
+                <textarea id="bio" name="bio">I help young athletes build confidence, master fundamentals, and turn steady practice into standout seasons.</textarea>
+              </div>
+              <div class="field">
+                <label for="sports">Favorite sports (comma separated)</label>
+                <input id="sports" name="sports" value="Basketball, Conditioning, Film Study" />
+              </div>
+              <div class="field">
+                <label for="players">Favorite players (one per line)</label>
+                <textarea id="players" name="players">Dawn Staley - leadership and discipline
+Stephen Curry - skill development
+A'ja Wilson - two-way dominance</textarea>
+              </div>
+              <div class="field">
+                <label for="achievements">Achievements (one per line)</label>
+                <textarea id="achievements" name="achievements">Led U16 team to regional finals
+Hosted 38 free weekend clinics
+Mentored 12 players into college programs</textarea>
+              </div>
+              <div class="field">
+                <label for="students">Notable students (one per line)</label>
+                <textarea id="students" name="students">Jordan Lee - earned all-state honors
+Priya Shah - improved free throws from 58% to 84%
+Marcus Reed - defensive player of the tournament</textarea>
+              </div>
+            </form>
+
+            <article class="profile-preview card" aria-live="polite">
+              <div class="preview-cover">
+                <span class="preview-tag">Public sports page</span>
+              </div>
+              <div class="preview-body">
+                <div class="preview-top">
+                  <div>
+                    <h3 id="profile-name"></h3>
+                    <p id="profile-role" class="muted"></p>
+                    <p id="profile-location" class="muted"></p>
+                  </div>
+                  <div id="profile-avatar" class="avatar" aria-hidden="true"></div>
+                </div>
+                <p id="profile-bio"></p>
+
+                <h4>Favorite sports</h4>
+                <div id="sports-list" class="chips"></div>
+
+                <h4>Favorite players</h4>
+                <div id="players-list" class="timeline"></div>
+
+                <h4>Achievements</h4>
+                <div id="achievements-list" class="timeline"></div>
+
+                <h4>Notable students</h4>
+                <div id="students-empty" class="empty-state" hidden>
+                  Add student names and accomplishments to turn this into a coach page.
+                </div>
+                <div id="students-list" class="students"></div>
+              </div>
+            </article>
+          </div>
+        </section>
+
+        <section class="section" id="features">
+          <div class="section-heading">
+            <div>
+              <p class="eyebrow">Feature set</p>
+              <h2>Built for fans, athletes, and coaches.</h2>
+            </div>
+          </div>
+
+          <div class="grid feature-grid">
+            <article class="feature-card card">
+              <span class="feature-icon">01</span>
+              <h3>Favorite sports</h3>
+              <p>List every sport someone follows, plays, coaches, or wants to learn next.</p>
+            </article>
+            <article class="feature-card card">
+              <span class="feature-icon">02</span>
+              <h3>Favorite players</h3>
+              <p>Explain role models, signature moments, and what makes those athletes inspiring.</p>
+            </article>
+            <article class="feature-card card">
+              <span class="feature-icon">03</span>
+              <h3>Achievements</h3>
+              <p>Share records, trophies, milestones, leadership roles, and community wins.</p>
+            </article>
+            <article class="feature-card card">
+              <span class="feature-icon">04</span>
+              <h3>Coach pages</h3>
+              <p>Show notable students alongside the progress and accomplishments they earned.</p>
+            </article>
+          </div>
+        </section>
+
+        <section class="section" id="examples">
+          <div class="section-heading">
+            <div>
+              <p class="eyebrow">Example pages</p>
+              <h2>Switch between sports identities.</h2>
+            </div>
+            <p>
+              Try fan, athlete, and coach templates to see how the same profile
+              structure adapts to different sports stories.
+            </p>
+          </div>
+
+          <div class="profile-tabs" role="tablist" aria-label="Example profile templates">
+            <button class="tab-button active" type="button" data-profile-index="0">Athlete</button>
+            <button class="tab-button" type="button" data-profile-index="1">Coach</button>
+            <button class="tab-button" type="button" data-profile-index="2">Fan</button>
+          </div>
+
+          <div class="grid showcase-grid">
+            <article class="showcase-card card">
+              <h3>Personal brand</h3>
+              <p>Create a shareable page that captures the person behind the sports journey.</p>
+              <div class="showcase-meta">
+                <span class="pill">Bio</span>
+                <span class="pill">Location</span>
+                <span class="pill">Headline</span>
+              </div>
+            </article>
+            <article class="showcase-card card">
+              <h3>Performance timeline</h3>
+              <p>Organize wins, records, milestones, and lessons into a clean public story.</p>
+              <div class="showcase-meta">
+                <span class="pill">Awards</span>
+                <span class="pill">Records</span>
+                <span class="pill">Teams</span>
+              </div>
+            </article>
+            <article class="showcase-card card">
+              <h3>Coaching legacy</h3>
+              <p>Celebrate the students, team culture, and development wins coaches are proud of.</p>
+              <div class="showcase-meta">
+                <span class="pill">Students</span>
+                <span class="pill">Clinics</span>
+                <span class="pill">Scholarships</span>
+              </div>
+            </article>
+          </div>
+        </section>
+      </main>
+
+      <footer class="footer">
+        <p>Sports Spotlight concept app for celebrating sports journeys.</p>
+      </footer>
+    </div>
+
+    <script src="app.js"></script>
+  </body>
+</html>
