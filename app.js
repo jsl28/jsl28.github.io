@@ -7,7 +7,8 @@ const examples = [
     sports: "Basketball, Track & Field, Strength Training",
     players: "A'ja Wilson - two-way dominance\nStephen Curry - shooting craft\nAllyson Felix - championship consistency",
     achievements: "2025 City league MVP\nVarsity captain for two seasons\nOrganized a free girls skills clinic for 64 athletes",
-    students: ""
+    students: "",
+    activity: { contests: 14, bookings: 9, streak: 11, level: "Gold" }
   },
   {
     name: "Coach Andre Ellis",
@@ -17,7 +18,8 @@ const examples = [
     sports: "Basketball, Conditioning, Film Study",
     players: "Dawn Staley - leadership and discipline\nStephen Curry - skill development\nA'ja Wilson - two-way dominance",
     achievements: "Led U16 team to regional finals\nHosted 38 free weekend clinics\nMentored 12 players into college programs",
-    students: "Jordan Lee - earned all-state honors\nPriya Shah - improved free throws from 58% to 84%\nMarcus Reed - defensive player of the tournament"
+    students: "Jordan Lee - earned all-state honors\nPriya Shah - improved free throws from 58% to 84%\nMarcus Reed - defensive player of the tournament",
+    activity: { contests: 8, bookings: 18, streak: 22, level: "Coach" }
   },
   {
     name: "Elena Garcia",
@@ -27,7 +29,80 @@ const examples = [
     sports: "Tennis, Pickleball, Running",
     players: "Iga Swiatek - baseline pressure\nCoco Gauff - fearless defense\nRafael Nadal - relentless resilience",
     achievements: "Community doubles league champion\nPublished 52 weekly match breakdowns\nCompleted first half marathon",
-    students: ""
+    students: "",
+    activity: { contests: 21, bookings: 6, streak: 15, level: "Platinum" }
+  }
+];
+
+const centres = [
+  {
+    id: "greenfield-arena",
+    name: "Greenfield Arena",
+    location: "Koramangala, Bengaluru",
+    distanceKm: 2.4,
+    games: ["Badminton", "Basketball", "Table Tennis"],
+    ownerRule: "Owner base rate + demand surge after 60% slots are booked.",
+    slots: [
+      { id: "ga-6", time: "6:00 PM", game: "Badminton", capacity: 6, booked: 3, basePrice: 420, ownerMultiplier: 1.15 },
+      { id: "ga-7", time: "7:00 PM", game: "Basketball", capacity: 10, booked: 7, basePrice: 1200, ownerMultiplier: 1.1 },
+      { id: "ga-8", time: "8:00 PM", game: "Table Tennis", capacity: 4, booked: 1, basePrice: 280, ownerMultiplier: 1.05 }
+    ]
+  },
+  {
+    id: "orbit-sports-club",
+    name: "Orbit Sports Club",
+    location: "Indiranagar, Bengaluru",
+    distanceKm: 5.8,
+    games: ["Football", "Cricket Nets", "Pickleball"],
+    ownerRule: "Owner sets premium evening rates; price eases when more than 4 slots remain.",
+    slots: [
+      { id: "os-5", time: "5:30 PM", game: "Football", capacity: 14, booked: 10, basePrice: 1800, ownerMultiplier: 1.2 },
+      { id: "os-7", time: "7:00 PM", game: "Cricket Nets", capacity: 8, booked: 4, basePrice: 650, ownerMultiplier: 1.08 },
+      { id: "os-9", time: "9:00 PM", game: "Pickleball", capacity: 6, booked: 2, basePrice: 500, ownerMultiplier: 1.0 }
+    ]
+  },
+  {
+    id: "northstar-courts",
+    name: "Northstar Courts",
+    location: "Hebbal, Bengaluru",
+    distanceKm: 11.2,
+    games: ["Tennis", "Squash", "Badminton"],
+    ownerRule: "Owner rewards early bookings, then increases price near sell-out.",
+    slots: [
+      { id: "ns-6", time: "6:30 PM", game: "Tennis", capacity: 4, booked: 2, basePrice: 900, ownerMultiplier: 1.12 },
+      { id: "ns-8", time: "8:00 PM", game: "Squash", capacity: 4, booked: 3, basePrice: 720, ownerMultiplier: 1.18 },
+      { id: "ns-9", time: "9:30 PM", game: "Badminton", capacity: 6, booked: 5, basePrice: 450, ownerMultiplier: 1.25 }
+    ]
+  }
+];
+
+const awards = [
+  {
+    id: "finals-ticket",
+    title: "State finals VIP tickets",
+    type: "Game tickets",
+    sponsor: "Pacific State Track",
+    criteria: "Contest participation and monthly play streak carry the highest odds boost.",
+    baseOdds: 18,
+    bids: 42
+  },
+  {
+    id: "signed-jersey",
+    title: "Signed captain jersey",
+    type: "Player jersey",
+    sponsor: "Maya Thompson",
+    criteria: "Court bookings and recent contests improve jersey auction odds.",
+    baseOdds: 12,
+    bids: 61
+  },
+  {
+    id: "training-pass",
+    title: "Elite training day pass",
+    type: "Coaching reward",
+    sponsor: "Coach Andre Ellis",
+    criteria: "Balanced activity across contests, bookings, and streaks gets priority odds.",
+    baseOdds: 24,
+    bids: 29
   }
 ];
 
@@ -170,6 +245,10 @@ const playersList = document.querySelector("#players-list");
 const achievementsList = document.querySelector("#achievements-list");
 const studentsList = document.querySelector("#students-list");
 const studentsEmpty = document.querySelector("#students-empty");
+const profileContests = document.querySelector("#profile-contests");
+const profileBookings = document.querySelector("#profile-bookings");
+const profileStreak = document.querySelector("#profile-streak");
+const profileScore = document.querySelector("#profile-score");
 const competitionFilters = {
   search: document.querySelector("#competition-search"),
   scope: document.querySelector("#scope-filter"),
@@ -196,6 +275,30 @@ const historyCount = document.querySelector("#history-count");
 const detailResultCount = document.querySelector("#detail-result-count");
 let activeCompetitionId = competitions[0].id;
 let activePreset = "all";
+const centreFilters = {
+  game: document.querySelector("#centre-game-filter"),
+  distance: document.querySelector("#centre-distance-filter")
+};
+const centreList = document.querySelector("#centre-list");
+const centreCount = document.querySelector("#centre-count");
+const slotCount = document.querySelector("#slot-count");
+const avgPrice = document.querySelector("#avg-price");
+const centreSummary = document.querySelector("#centre-summary");
+const centreDistance = document.querySelector("#centre-distance");
+const centreName = document.querySelector("#centre-name");
+const centreLocation = document.querySelector("#centre-location");
+const centrePricingNote = document.querySelector("#centre-pricing-note");
+const centreGames = document.querySelector("#centre-games");
+const centreOpenSlots = document.querySelector("#centre-open-slots");
+const slotList = document.querySelector("#slot-list");
+const awardPlayerSelect = document.querySelector("#award-player-select");
+const awardContests = document.querySelector("#award-contests");
+const awardBookings = document.querySelector("#award-bookings");
+const awardStreak = document.querySelector("#award-streak");
+const awardScore = document.querySelector("#award-score");
+const awardList = document.querySelector("#award-list");
+let activeCentreId = centres[0].id;
+let activeProfileActivity = examples[1].activity;
 
 function getLines(value) {
   return value
@@ -453,6 +556,217 @@ function applyCompetitionPreset(preset) {
   renderCompetitions();
 }
 
+function getActivityScore(activity) {
+  return activity.contests * 12 + activity.bookings * 9 + activity.streak * 5;
+}
+
+function getSlotAvailability(slot) {
+  return Math.max(slot.capacity - slot.booked, 0);
+}
+
+function getSlotPrice(slot) {
+  const demandRatio = slot.booked / slot.capacity;
+  const demandMultiplier = demandRatio >= 0.8 ? 1.35 : demandRatio >= 0.6 ? 1.18 : 1;
+  return Math.round(slot.basePrice * slot.ownerMultiplier * demandMultiplier);
+}
+
+function getCentreOpenSlots(centre) {
+  return centre.slots.reduce((total, slot) => total + getSlotAvailability(slot), 0);
+}
+
+function getFilteredCentres() {
+  const selectedGame = centreFilters.game.value;
+  const selectedDistance = centreFilters.distance.value;
+
+  return centres.filter((centre) => {
+    const matchesGame = selectedGame === "all" || centre.games.includes(selectedGame);
+    const matchesDistance =
+      selectedDistance === "all" || centre.distanceKm <= Number(selectedDistance);
+
+    return matchesGame && matchesDistance;
+  });
+}
+
+function renderCentreCards(filteredCentres) {
+  centreList.innerHTML = "";
+
+  filteredCentres.forEach((centre) => {
+    const card = document.createElement("button");
+    const title = document.createElement("h3");
+    const meta = document.createElement("p");
+    const badges = document.createElement("div");
+    const slotBadge = document.createElement("span");
+    const priceBadge = document.createElement("span");
+    const lowestPrice = Math.min(...centre.slots.map(getSlotPrice));
+
+    card.type = "button";
+    card.className = "centre-card";
+    card.classList.toggle("is-active", centre.id === activeCentreId);
+    card.setAttribute("aria-pressed", String(centre.id === activeCentreId));
+
+    title.textContent = centre.name;
+    meta.textContent = `${centre.location} - ${centre.distanceKm} km away`;
+    badges.className = "competition-meta-row";
+    slotBadge.className = "competition-badge";
+    slotBadge.textContent = `${getCentreOpenSlots(centre)} open slots`;
+    priceBadge.className = "competition-badge signal";
+    priceBadge.textContent = `From ₹${lowestPrice}`;
+
+    badges.append(slotBadge, priceBadge);
+    card.append(title, meta, badges);
+    card.addEventListener("click", () => {
+      activeCentreId = centre.id;
+      renderCentres();
+    });
+    centreList.appendChild(card);
+  });
+}
+
+function renderCentreStats(filteredCentres) {
+  const openSlots = filteredCentres.reduce((total, centre) => total + getCentreOpenSlots(centre), 0);
+  const prices = filteredCentres.flatMap((centre) => centre.slots.map(getSlotPrice));
+  const averagePrice =
+    prices.length > 0 ? Math.round(prices.reduce((total, price) => total + price, 0) / prices.length) : 0;
+
+  centreCount.textContent = filteredCentres.length;
+  slotCount.textContent = openSlots;
+  avgPrice.textContent = `₹${averagePrice}`;
+  centreSummary.textContent =
+    filteredCentres.length > 0
+      ? `${openSlots} playable slots across ${filteredCentres.length} centre${filteredCentres.length === 1 ? "" : "s"}`
+      : "No centres match those filters";
+}
+
+function renderCentreDetail(centre) {
+  centreDistance.textContent = `${centre.distanceKm} km away`;
+  centreName.textContent = centre.name;
+  centreLocation.textContent = centre.location;
+  centrePricingNote.textContent = centre.ownerRule;
+  centreOpenSlots.textContent = `${getCentreOpenSlots(centre)} open`;
+  renderList(centreGames, centre.games, "pill");
+  slotList.innerHTML = "";
+
+  centre.slots.forEach((slot) => {
+    const availability = getSlotAvailability(slot);
+    const row = document.createElement("div");
+    const details = document.createElement("div");
+    const title = document.createElement("strong");
+    const meta = document.createElement("span");
+    const price = document.createElement("strong");
+    const action = document.createElement("button");
+
+    row.className = "slot-row";
+    title.textContent = `${slot.game} - ${slot.time}`;
+    meta.textContent = `${availability}/${slot.capacity} slots available`;
+    details.append(title, meta);
+    price.textContent = `₹${getSlotPrice(slot)}`;
+    action.className = "slot-book-button";
+    action.type = "button";
+    action.textContent = availability > 0 ? "Book" : "Full";
+    action.disabled = availability === 0;
+    action.addEventListener("click", () => {
+      if (getSlotAvailability(slot) === 0) {
+        return;
+      }
+
+      slot.booked += 1;
+      activeProfileActivity.bookings += 1;
+      renderCentres();
+      updateActivityPreview();
+      renderAwards();
+    });
+
+    row.append(details, price, action);
+    slotList.appendChild(row);
+  });
+}
+
+function renderCentres() {
+  const filteredCentres = getFilteredCentres();
+
+  if (!filteredCentres.some((centre) => centre.id === activeCentreId)) {
+    activeCentreId = filteredCentres[0]?.id || centres[0].id;
+  }
+
+  renderCentreCards(filteredCentres);
+  renderCentreStats(filteredCentres);
+  renderCentreDetail(filteredCentres.find((centre) => centre.id === activeCentreId) || centres[0]);
+}
+
+function renderAwardPlayerOptions() {
+  examples.forEach((example, index) => {
+    const option = document.createElement("option");
+    option.value = String(index);
+    option.textContent = example.name;
+    awardPlayerSelect.appendChild(option);
+  });
+  awardPlayerSelect.value = "1";
+}
+
+function getAwardOdds(award, activity) {
+  const scoreBoost = Math.min(getActivityScore(activity) / 18, 32);
+  const contestBoost = Math.min(activity.contests * 0.9, 18);
+  const bookingBoost = Math.min(activity.bookings * 0.75, 20);
+  return Math.min(Math.round(award.baseOdds + scoreBoost + contestBoost + bookingBoost), 92);
+}
+
+function renderAwards() {
+  const selectedProfile = examples[Number(awardPlayerSelect.value)];
+  const activity = selectedProfile.activity;
+
+  awardContests.textContent = activity.contests;
+  awardBookings.textContent = activity.bookings;
+  awardStreak.textContent = activity.streak;
+  awardScore.textContent = getActivityScore(activity);
+  awardList.innerHTML = "";
+
+  awards.forEach((award) => {
+    const odds = getAwardOdds(award, activity);
+    const item = document.createElement("article");
+    const top = document.createElement("div");
+    const title = document.createElement("h3");
+    const type = document.createElement("span");
+    const criteria = document.createElement("p");
+    const meter = document.createElement("div");
+    const meterFill = document.createElement("span");
+    const footer = document.createElement("div");
+    const oddsLabel = document.createElement("strong");
+    const bidButton = document.createElement("button");
+
+    item.className = "award-card card";
+    top.className = "award-card-top";
+    type.className = "competition-badge signal";
+    title.textContent = award.title;
+    type.textContent = award.type;
+    top.append(title, type);
+    criteria.textContent = `${award.sponsor} - ${award.criteria}`;
+    meter.className = "odds-meter";
+    meterFill.style.width = `${odds}%`;
+    meter.appendChild(meterFill);
+    footer.className = "award-card-footer";
+    oddsLabel.textContent = `${odds}% odds score`;
+    bidButton.type = "button";
+    bidButton.className = "slot-book-button";
+    bidButton.textContent = `Bid (${award.bids})`;
+    bidButton.addEventListener("click", () => {
+      award.bids += 1;
+      activeProfileActivity.contests += 1;
+      renderAwards();
+      updateActivityPreview();
+    });
+    footer.append(oddsLabel, bidButton);
+    item.append(top, criteria, meter, footer);
+    awardList.appendChild(item);
+  });
+}
+
+function updateActivityPreview() {
+  profileContests.textContent = activeProfileActivity.contests;
+  profileBookings.textContent = activeProfileActivity.bookings;
+  profileStreak.textContent = activeProfileActivity.streak;
+  profileScore.textContent = getActivityScore(activeProfileActivity);
+}
+
 function updatePreview() {
   const sports = getLines(fields.sports.value);
   const players = getLines(fields.players.value);
@@ -469,14 +783,21 @@ function updatePreview() {
   renderList(playersList, players, "timeline-item");
   renderList(achievementsList, achievements, "timeline-item");
   renderStudents(students);
+  updateActivityPreview();
 }
 
 function loadExample(index) {
   const example = examples[index];
 
   Object.entries(example).forEach(([key, value]) => {
+    if (!fields[key]) {
+      return;
+    }
+
     fields[key].value = value;
   });
+
+  activeProfileActivity = example.activity;
 
   tabButtons.forEach((button, buttonIndex) => {
     const isActive = buttonIndex === index;
@@ -510,6 +831,11 @@ addOptions(
   competitionFilters.country,
   [...new Set(competitions.map((competition) => competition.country))].sort()
 );
+addOptions(
+  centreFilters.game,
+  [...new Set(centres.flatMap((centre) => centre.games))].sort()
+);
+renderAwardPlayerOptions();
 
 competitionFilters.search.addEventListener("input", () => {
   activePreset = "custom";
@@ -531,5 +857,13 @@ competitionReset.addEventListener("click", () => {
   applyCompetitionPreset("all");
 });
 
+Object.values(centreFilters).forEach((filter) => {
+  filter.addEventListener("change", renderCentres);
+});
+
+awardPlayerSelect.addEventListener("change", renderAwards);
+
 loadExample(1);
 renderCompetitions();
+renderCentres();
+renderAwards();

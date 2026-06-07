@@ -21,6 +21,8 @@
         </a>
         <nav class="nav-links" aria-label="Primary navigation">
           <a href="#competitions">Competitions</a>
+          <a href="#centres">Centres</a>
+          <a href="#awards">Awards</a>
           <a href="#builder">Build a page</a>
           <a href="#features">Features</a>
           <a href="#examples">Examples</a>
@@ -36,10 +38,11 @@
               Create a page for favorite sports, players, personal milestones,
               tournament wins, and coaching impact. Discover competitions nearby
               or worldwide, follow recurring championship history, and view
-              official results from the same place.
+              official results, book courts, and join reward auctions from the same place.
             </p>
             <div class="hero-actions">
               <a class="button" href="#competitions">Find competitions</a>
+              <a class="button" href="#centres">Book a court</a>
               <a class="button" href="#builder">Create a sample page</a>
               <a class="button button-secondary" href="#examples">View examples</a>
             </div>
@@ -207,6 +210,132 @@
           </div>
         </section>
 
+        <section class="section play-zone" id="centres">
+          <div class="section-heading">
+            <div>
+              <p class="eyebrow">Nearby play centres</p>
+              <h2>Book courts with live slots and owner pricing.</h2>
+            </div>
+            <p>
+              Browse nearby centres, see supported games, check available slots,
+              and watch court prices update as people book capacity.
+            </p>
+          </div>
+
+          <div class="centres-shell">
+            <aside class="centre-panel card">
+              <h3>Find a place to play</h3>
+              <div class="field">
+                <label for="centre-game-filter">Game</label>
+                <select id="centre-game-filter" name="centre-game-filter">
+                  <option value="all">All games</option>
+                </select>
+              </div>
+              <div class="field">
+                <label for="centre-distance-filter">Distance</label>
+                <select id="centre-distance-filter" name="centre-distance-filter">
+                  <option value="all">Any distance</option>
+                  <option value="5">Within 5 km</option>
+                  <option value="10">Within 10 km</option>
+                </select>
+              </div>
+              <div class="stat-strip compact-stats">
+                <div>
+                  <strong id="centre-count">0</strong>
+                  <span>Centres</span>
+                </div>
+                <div>
+                  <strong id="slot-count">0</strong>
+                  <span>Open slots</span>
+                </div>
+                <div>
+                  <strong id="avg-price">₹0</strong>
+                  <span>Avg price</span>
+                </div>
+              </div>
+            </aside>
+
+            <div class="centre-feed">
+              <div class="feed-heading">
+                <div>
+                  <p class="eyebrow">Live court board</p>
+                  <h3>Available centres</h3>
+                </div>
+                <p id="centre-summary" class="muted"></p>
+              </div>
+              <div id="centre-list" class="centre-list" aria-live="polite"></div>
+            </div>
+
+            <article class="centre-detail card" aria-live="polite">
+              <div class="detail-topline">
+                <p class="eyebrow">Selected centre</p>
+                <span id="centre-distance" class="competition-badge"></span>
+              </div>
+              <h3 id="centre-name"></h3>
+              <p id="centre-location" class="muted"></p>
+              <p id="centre-pricing-note"></p>
+              <div id="centre-games" class="pill-row"></div>
+              <div class="detail-section-title">
+                <h4>Slots and dynamic pricing</h4>
+                <span id="centre-open-slots"></span>
+              </div>
+              <div id="slot-list" class="slot-list"></div>
+            </article>
+          </div>
+        </section>
+
+        <section class="section awards-zone" id="awards">
+          <div class="section-heading">
+            <div>
+              <p class="eyebrow">Awards auction</p>
+              <h2>Bid for tickets, jerseys, and player rewards.</h2>
+            </div>
+            <p>
+              Auction odds are calculated from activity signals such as monthly
+              contest participation, court bookings, play streaks, and profile level.
+            </p>
+          </div>
+
+          <div class="awards-shell">
+            <aside class="award-player-card card">
+              <h3>Auction profile</h3>
+              <div class="field">
+                <label for="award-player-select">Player</label>
+                <select id="award-player-select" name="award-player-select"></select>
+              </div>
+              <div class="activity-grid">
+                <div>
+                  <strong id="award-contests">0</strong>
+                  <span>Contests this month</span>
+                </div>
+                <div>
+                  <strong id="award-bookings">0</strong>
+                  <span>Court bookings</span>
+                </div>
+                <div>
+                  <strong id="award-streak">0</strong>
+                  <span>Play streak</span>
+                </div>
+                <div>
+                  <strong id="award-score">0</strong>
+                  <span>Activity score</span>
+                </div>
+              </div>
+            </aside>
+
+            <div class="award-feed">
+              <div class="feed-heading">
+                <div>
+                  <p class="eyebrow">Reward board</p>
+                  <h3>Live auction awards</h3>
+                </div>
+                <p class="muted">Higher activity improves odds, but every bid still competes.</p>
+              </div>
+              <div id="award-list" class="award-list" aria-live="polite"></div>
+            </div>
+          </div>
+        </section>
+
         <section class="section" id="builder">
           <div class="section-heading">
             <div>
@@ -277,6 +406,26 @@ Marcus Reed - defensive player of the tournament</textarea>
                   <div id="profile-avatar" class="avatar" aria-hidden="true"></div>
                 </div>
                 <p id="profile-bio"></p>
+
+                <h4>Player activity</h4>
+                <div class="activity-grid profile-activity-grid">
+                  <div>
+                    <strong id="profile-contests">0</strong>
+                    <span>Monthly contests</span>
+                  </div>
+                  <div>
+                    <strong id="profile-bookings">0</strong>
+                    <span>Court bookings</span>
+                  </div>
+                  <div>
+                    <strong id="profile-streak">0</strong>
+                    <span>Play streak</span>
+                  </div>
+                  <div>
+                    <strong id="profile-score">0</strong>
+                    <span>Activity score</span>
+                  </div>
+                </div>
 
                 <h4>Favorite sports</h4>
                 <div id="sports-list" class="chips"></div>

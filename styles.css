@@ -694,6 +694,197 @@ a {
   color: var(--muted);
 }
 
+.play-zone,
+.awards-zone {
+  position: relative;
+}
+
+.centres-shell,
+.awards-shell {
+  display: grid;
+  grid-template-columns: minmax(250px, 0.72fr) minmax(320px, 1fr) minmax(340px, 1.05fr);
+  gap: 20px;
+  align-items: start;
+}
+
+.awards-shell {
+  grid-template-columns: minmax(260px, 0.72fr) minmax(0, 1.45fr);
+}
+
+.centre-panel,
+.centre-detail,
+.award-player-card {
+  padding: 24px;
+  border-color: rgba(134, 255, 47, 0.3);
+  background:
+    linear-gradient(180deg, rgba(134, 255, 47, 0.08), rgba(255, 255, 255, 0.035)),
+    rgba(3, 12, 3, 0.86);
+}
+
+.centre-feed,
+.award-feed {
+  display: grid;
+  gap: 14px;
+}
+
+.centre-list,
+.slot-list,
+.award-list {
+  display: grid;
+  gap: 14px;
+}
+
+.centre-card {
+  display: grid;
+  gap: 10px;
+  width: 100%;
+  padding: 18px;
+  border: 1px solid var(--line);
+  border-radius: 24px;
+  color: var(--text);
+  background:
+    radial-gradient(circle at 100% 0%, rgba(244, 255, 82, 0.12), transparent 34%),
+    rgba(255, 255, 255, 0.075);
+  text-align: left;
+  transition:
+    transform 160ms ease,
+    border-color 160ms ease,
+    background 160ms ease;
+}
+
+.centre-card:hover {
+  transform: translateY(-2px);
+  border-color: rgba(134, 255, 47, 0.55);
+}
+
+.centre-card.is-active {
+  border-color: rgba(134, 255, 47, 0.88);
+  background:
+    linear-gradient(135deg, rgba(134, 255, 47, 0.2), rgba(0, 210, 106, 0.08)),
+    rgba(255, 255, 255, 0.075);
+}
+
+.centre-card h3,
+.centre-card p {
+  margin: 0;
+}
+
+.centre-card p {
+  color: var(--muted);
+}
+
+.slot-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto auto;
+  gap: 12px;
+  align-items: center;
+  padding: 14px;
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  background:
+    linear-gradient(90deg, rgba(134, 255, 47, 0.12), rgba(255, 255, 255, 0.045)),
+    rgba(255, 255, 255, 0.065);
+}
+
+.slot-row div {
+  display: grid;
+  gap: 4px;
+}
+
+.slot-row span {
+  color: var(--muted);
+}
+
+.slot-book-button {
+  border: 0;
+  border-radius: 999px;
+  padding: 10px 14px;
+  color: #031103;
+  background: var(--accent);
+  font-weight: 900;
+  box-shadow: 0 12px 28px rgba(134, 255, 47, 0.22);
+}
+
+.slot-book-button:disabled {
+  cursor: not-allowed;
+  color: var(--muted);
+  background: rgba(255, 255, 255, 0.12);
+  box-shadow: none;
+}
+
+.activity-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+  margin: 18px 0;
+}
+
+.activity-grid div {
+  padding: 14px;
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  background: rgba(134, 255, 47, 0.08);
+}
+
+.activity-grid strong {
+  display: block;
+  color: var(--accent-3);
+  font-size: 1.75rem;
+}
+
+.activity-grid span {
+  color: var(--muted);
+  font-size: 0.82rem;
+}
+
+.profile-activity-grid {
+  margin-top: 12px;
+}
+
+.award-card {
+  display: grid;
+  gap: 14px;
+  padding: 22px;
+  border-color: rgba(134, 255, 47, 0.28);
+  background:
+    radial-gradient(circle at 100% 0%, rgba(134, 255, 47, 0.16), transparent 28%),
+    rgba(255, 255, 255, 0.075);
+}
+
+.award-card-top,
+.award-card-footer {
+  display: flex;
+  justify-content: space-between;
+  gap: 14px;
+  align-items: center;
+}
+
+.award-card h3,
+.award-card p {
+  margin: 0;
+}
+
+.award-card p {
+  color: var(--muted);
+  line-height: 1.55;
+}
+
+.odds-meter {
+  overflow: hidden;
+  height: 12px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: rgba(0, 0, 0, 0.32);
+}
+
+.odds-meter span {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, var(--accent), var(--accent-3));
+  box-shadow: 0 0 18px rgba(134, 255, 47, 0.4);
+}
+
 .field textarea {
   min-height: 88px;
   resize: vertical;
@@ -861,7 +1052,9 @@ a {
   .hero,
   .builder-layout,
   .competition-shell,
-  .competition-radar {
+  .competition-radar,
+  .centres-shell,
+  .awards-shell {
     grid-template-columns: 1fr;
   }
 
@@ -907,6 +1100,18 @@ a {
   }
 
   .result-row {
+    grid-template-columns: 1fr;
+  }
+
+  .slot-row,
+  .award-card-top,
+  .award-card-footer {
+    align-items: flex-start;
+    grid-template-columns: 1fr;
+    flex-direction: column;
+  }
+
+  .activity-grid {
     grid-template-columns: 1fr;
   }
 
