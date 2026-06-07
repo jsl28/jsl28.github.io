@@ -20,6 +20,7 @@
           <span>Sports Spotlight</span>
         </a>
         <nav class="nav-links" aria-label="Primary navigation">
+          <a href="#competitions">Competitions</a>
           <a href="#builder">Build a page</a>
           <a href="#features">Features</a>
           <a href="#examples">Examples</a>
@@ -33,10 +34,12 @@
             <h1>Show the sports story that makes you unforgettable.</h1>
             <p class="hero-copy">
               Create a page for favorite sports, players, personal milestones,
-              tournament wins, and coaching impact. Coaches can also spotlight
-              notable students and the accomplishments they helped shape.
+              tournament wins, and coaching impact. Discover competitions nearby
+              or worldwide, follow recurring championship history, and view
+              official results from the same place.
             </p>
             <div class="hero-actions">
+              <a class="button" href="#competitions">Find competitions</a>
               <a class="button" href="#builder">Create a sample page</a>
               <a class="button button-secondary" href="#examples">View examples</a>
             </div>
@@ -71,6 +74,87 @@
               </div>
             </div>
           </aside>
+        </section>
+
+        <section class="section" id="competitions">
+          <div class="section-heading">
+            <div>
+              <p class="eyebrow">Competition hub</p>
+              <h2>Find events nearby or across the world.</h2>
+            </div>
+            <p>
+              Browse upcoming competitions, recurring championship history, and
+              published results with filters for region, country, and location scope.
+            </p>
+          </div>
+
+          <div class="competition-shell">
+            <aside class="competition-filters card" aria-label="Competition filters">
+              <h3>Explore competitions</h3>
+              <div class="field">
+                <label for="scope-filter">Location scope</label>
+                <select id="scope-filter" name="scope-filter">
+                  <option value="all">Worldwide</option>
+                  <option value="nearby">Nearby</option>
+                </select>
+              </div>
+              <div class="field">
+                <label for="region-filter">Region</label>
+                <select id="region-filter" name="region-filter">
+                  <option value="all">All regions</option>
+                </select>
+              </div>
+              <div class="field">
+                <label for="country-filter">Country</label>
+                <select id="country-filter" name="country-filter">
+                  <option value="all">All countries</option>
+                </select>
+              </div>
+              <div class="field">
+                <label for="status-filter">Status</label>
+                <select id="status-filter" name="status-filter">
+                  <option value="all">Upcoming and results</option>
+                  <option value="upcoming">Upcoming only</option>
+                  <option value="results">Results posted</option>
+                </select>
+              </div>
+              <div class="stat-strip compact-stats">
+                <div>
+                  <strong id="competition-count">0</strong>
+                  <span>Matches</span>
+                </div>
+                <div>
+                  <strong id="country-count">0</strong>
+                  <span>Countries</span>
+                </div>
+                <div>
+                  <strong id="result-count">0</strong>
+                  <span>Results</span>
+                </div>
+              </div>
+            </aside>
+
+            <div>
+              <div id="competition-list" class="competition-list" aria-live="polite"></div>
+              <p id="competition-empty" class="empty-state" hidden>
+                No competitions match those filters yet.
+              </p>
+            </div>
+
+            <article class="competition-detail card" aria-live="polite">
+              <p class="eyebrow">Selected competition</p>
+              <h3 id="competition-title"></h3>
+              <p id="competition-meta" class="muted"></p>
+              <p id="competition-summary"></p>
+              <div id="competition-tags" class="pill-row"></div>
+
+              <h4>Recurring history</h4>
+              <div id="competition-history" class="timeline"></div>
+
+              <h4>Posted results</h4>
+              <div id="competition-results" class="results-table"></div>
+            </article>
+          </div>
         </section>
 
         <section class="section" id="builder">
