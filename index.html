@@ -76,7 +76,7 @@
           </aside>
         </section>
 
-        <section class="section" id="competitions">
+        <section class="section competition-zone" id="competitions">
           <div class="section-heading">
             <div>
               <p class="eyebrow">Competition hub</p>
@@ -88,9 +88,40 @@
             </p>
           </div>
 
+          <div class="competition-radar card">
+            <div>
+              <p class="eyebrow">Global sports signal</p>
+              <h3>Track upcoming competitions, recurring championships, and posted results in one live-style board.</h3>
+              <p>
+                Search by sport, country, or competition name, then jump between
+                nearby events, worldwide results, and championship histories.
+              </p>
+            </div>
+            <div class="radar-orb" aria-hidden="true">
+              <span></span>
+              <strong>5</strong>
+              <small>events indexed</small>
+            </div>
+          </div>
+
           <div class="competition-shell">
             <aside class="competition-filters card" aria-label="Competition filters">
               <h3>Explore competitions</h3>
+              <div class="field">
+                <label for="competition-search">Search</label>
+                <input
+                  id="competition-search"
+                  name="competition-search"
+                  type="search"
+                  placeholder="Try basketball, India, championship..."
+                />
+              </div>
+              <div class="quick-filter-group" aria-label="Quick competition filters">
+                <button class="quick-filter active" type="button" data-preset="all">All</button>
+                <button class="quick-filter" type="button" data-preset="nearby">Nearby</button>
+                <button class="quick-filter" type="button" data-preset="results">Results</button>
+                <button class="quick-filter" type="button" data-preset="championships">Championships</button>
+              </div>
               <div class="field">
                 <label for="scope-filter">Location scope</label>
                 <select id="scope-filter" name="scope-filter">
@@ -132,9 +163,19 @@
                   <span>Results</span>
                 </div>
               </div>
+              <button class="button button-secondary reset-button" id="competition-reset" type="button">
+                Reset filters
+              </button>
             </aside>
 
-            <div>
+            <div class="competition-feed">
+              <div class="feed-heading">
+                <div>
+                  <p class="eyebrow">Event feed</p>
+                  <h3>Competition matches</h3>
+                </div>
+                <p id="competition-filter-summary" class="muted"></p>
+              </div>
               <div id="competition-list" class="competition-list" aria-live="polite"></div>
               <p id="competition-empty" class="empty-state" hidden>
                 No competitions match those filters yet.
@@ -142,16 +183,25 @@
             </div>
 
             <article class="competition-detail card" aria-live="polite">
-              <p class="eyebrow">Selected competition</p>
+              <div class="detail-topline">
+                <p class="eyebrow">Selected competition</p>
+                <span id="competition-status-pill" class="competition-badge"></span>
+              </div>
               <h3 id="competition-title"></h3>
               <p id="competition-meta" class="muted"></p>
               <p id="competition-summary"></p>
               <div id="competition-tags" class="pill-row"></div>
 
-              <h4>Recurring history</h4>
+              <div class="detail-section-title">
+                <h4>Recurring history</h4>
+                <span id="history-count"></span>
+              </div>
               <div id="competition-history" class="timeline"></div>
 
-              <h4>Posted results</h4>
+              <div class="detail-section-title">
+                <h4>Posted results</h4>
+                <span id="detail-result-count"></span>
+              </div>
               <div id="competition-results" class="results-table"></div>
             </article>
           </div>

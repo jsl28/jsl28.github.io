@@ -171,23 +171,31 @@ const achievementsList = document.querySelector("#achievements-list");
 const studentsList = document.querySelector("#students-list");
 const studentsEmpty = document.querySelector("#students-empty");
 const competitionFilters = {
+  search: document.querySelector("#competition-search"),
   scope: document.querySelector("#scope-filter"),
   region: document.querySelector("#region-filter"),
   country: document.querySelector("#country-filter"),
   status: document.querySelector("#status-filter")
 };
+const quickFilterButtons = document.querySelectorAll(".quick-filter");
+const competitionReset = document.querySelector("#competition-reset");
 const competitionList = document.querySelector("#competition-list");
 const competitionEmpty = document.querySelector("#competition-empty");
 const competitionCount = document.querySelector("#competition-count");
 const countryCount = document.querySelector("#country-count");
 const resultCount = document.querySelector("#result-count");
+const competitionFilterSummary = document.querySelector("#competition-filter-summary");
 const competitionTitle = document.querySelector("#competition-title");
 const competitionMeta = document.querySelector("#competition-meta");
 const competitionSummary = document.querySelector("#competition-summary");
 const competitionTags = document.querySelector("#competition-tags");
 const competitionHistory = document.querySelector("#competition-history");
 const competitionResults = document.querySelector("#competition-results");
+const competitionStatusPill = document.querySelector("#competition-status-pill");
+const historyCount = document.querySelector("#history-count");
+const detailResultCount = document.querySelector("#detail-result-count");
 let activeCompetitionId = competitions[0].id;
+let activePreset = "all";
 
 function getLines(value) {
   return value
@@ -246,7 +254,23 @@ function addOptions(select, values) {
 }
 
 function getFilteredCompetitions() {
+  const query = competitionFilters.search.value.trim().toLowerCase();
+
   return competitions.filter((competition) => {
+    const searchableText = [
+      competition.title,
+      competition.sport,
+      competition.city,
+      competition.region,
+      competition.country,
+      competition.date,
+      competition.summary,
+      ...competition.tags,
+      ...competition.history
+    ]
+      .join(" ")
+      .toLowerCase();
+    const matchesSearch = !query || searchableText.includes(query);
     const matchesScope =
       competitionFilters.scope.value === "all" || competition.distanceKm <= 120;
     const matchesRegion =
@@ -259,7 +283,7 @@ function getFilteredCompetitions() {
       competitionFilters.status.value === "all" ||
       competition.status === competitionFilters.status.value;
 
-    return matchesScope && matchesRegion && matchesCountry && matchesStatus;
+    return matchesSearch && matchesScope && matchesRegion && matchesCountry && matchesStatus;
   });
 }
 
@@ -272,8 +296,10 @@ function renderCompetitionCards(filteredCompetitions) {
     const title = document.createElement("h3");
     const meta = document.createElement("p");
     const badgeRow = document.createElement("div");
+    const cardFooter = document.createElement("div");
     const statusBadge = document.createElement("span");
     const recurringBadge = document.createElement("span");
+    const resultBadge = document.createElement("span");
 
     card.type = "button";
     card.className = "competition-card";
@@ -289,9 +315,13 @@ function renderCompetitionCards(filteredCompetitions) {
       competition.status === "results" ? "Results posted" : "Upcoming";
     recurringBadge.className = "competition-badge";
     recurringBadge.textContent = competition.recurring ? "Recurring history" : "New event";
+    resultBadge.className = "competition-badge signal";
+    resultBadge.textContent = `${competition.results.length} result${competition.results.length === 1 ? "" : "s"}`;
+    cardFooter.className = "competition-card-footer";
+    cardFooter.innerHTML = `<strong>${competition.distanceKm <= 120 ? "Nearby signal" : "Global signal"}</strong><span>${competition.region}</span>`;
 
-    badgeRow.append(statusBadge, recurringBadge);
-    card.append(title, meta, badgeRow);
+    badgeRow.append(statusBadge, recurringBadge, resultBadge);
+    card.append(title, meta, badgeRow, cardFooter);
     card.addEventListener("click", () => {
       activeCompetitionId = competition.id;
       renderCompetitions();
@@ -301,9 +331,14 @@ function renderCompetitionCards(filteredCompetitions) {
 }
 
 function renderCompetitionDetail(competition) {
+  competitionStatusPill.className = `competition-badge ${competition.status}`;
+  competitionStatusPill.textContent =
+    competition.status === "results" ? "Results posted" : "Upcoming";
   competitionTitle.textContent = competition.title;
   competitionMeta.textContent = `${competition.sport} - ${competition.city}, ${competition.region}, ${competition.country} - ${competition.date}`;
   competitionSummary.textContent = competition.summary;
+  historyCount.textContent = `${competition.history.length} seasons`;
+  detailResultCount.textContent = `${competition.results.length} posted`;
   renderList(competitionTags, competition.tags, "pill");
   renderList(competitionHistory, competition.history, "timeline-item");
 
@@ -344,6 +379,37 @@ function renderCompetitionStats(filteredCompetitions) {
   resultCount.textContent = postedResults;
 }
 
+function renderFilterSummary(filteredCompetitions) {
+  const parts = [];
+
+  if (competitionFilters.search.value.trim()) {
+    parts.push(`Search: "${competitionFilters.search.value.trim()}"`);
+  }
+  if (competitionFilters.scope.value !== "all") {
+    parts.push("Nearby");
+  }
+  if (competitionFilters.region.value !== "all") {
+    parts.push(competitionFilters.region.value);
+  }
+  if (competitionFilters.country.value !== "all") {
+    parts.push(competitionFilters.country.value);
+  }
+  if (competitionFilters.status.value !== "all") {
+    parts.push(competitionFilters.status.value === "results" ? "Results posted" : "Upcoming");
+  }
+
+  competitionFilterSummary.textContent =
+    parts.length > 0
+      ? `${filteredCompetitions.length} match${filteredCompetitions.length === 1 ? "" : "es"} - ${parts.join(" / ")}`
+      : `${filteredCompetitions.length} worldwide competitions indexed`;
+}
+
+function updateQuickFilters() {
+  quickFilterButtons.forEach((button) => {
+    button.classList.toggle("active", button.dataset.preset === activePreset);
+  });
+}
+
 function renderCompetitions() {
   const filteredCompetitions = getFilteredCompetitions();
 
@@ -353,10 +419,38 @@ function renderCompetitions() {
 
   renderCompetitionCards(filteredCompetitions);
   renderCompetitionStats(filteredCompetitions);
+  renderFilterSummary(filteredCompetitions);
+  updateQuickFilters();
   renderCompetitionDetail(
     filteredCompetitions.find((competition) => competition.id === activeCompetitionId) ||
       competitions[0]
   );
+}
+
+function setCompetitionFilters(values) {
+  Object.entries(values).forEach(([key, value]) => {
+    competitionFilters[key].value = value;
+  });
+}
+
+function applyCompetitionPreset(preset) {
+  activePreset = preset;
+
+  const presets = {
+    all: { search: "", scope: "all", region: "all", country: "all", status: "all" },
+    nearby: { search: "", scope: "nearby", region: "all", country: "all", status: "all" },
+    results: { search: "", scope: "all", region: "all", country: "all", status: "results" },
+    championships: {
+      search: "championship",
+      scope: "all",
+      region: "all",
+      country: "all",
+      status: "all"
+    }
+  };
+
+  setCompetitionFilters(presets[preset]);
+  renderCompetitions();
 }
 
 function updatePreview() {
@@ -417,8 +511,24 @@ addOptions(
   [...new Set(competitions.map((competition) => competition.country))].sort()
 );
 
-Object.values(competitionFilters).forEach((filter) => {
-  filter.addEventListener("change", renderCompetitions);
+competitionFilters.search.addEventListener("input", () => {
+  activePreset = "custom";
+  renderCompetitions();
+});
+
+["scope", "region", "country", "status"].forEach((filterKey) => {
+  competitionFilters[filterKey].addEventListener("change", () => {
+    activePreset = "custom";
+    renderCompetitions();
+  });
+});
+
+quickFilterButtons.forEach((button) => {
+  button.addEventListener("click", () => applyCompetitionPreset(button.dataset.preset));
+});
+
+competitionReset.addEventListener("click", () => {
+  applyCompetitionPreset("all");
 });
 
 loadExample(1);
